@@ -3,8 +3,6 @@ from machine import Pin, ADC, I2C
 from umqtt.simple import MQTTClient
 import gc
 
-gc.collect()
-
 server = b"test.mosquitto.org"
 topic = b"sum_topic"
 
