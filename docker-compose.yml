@@ -1,24 +1,35 @@
-version: '3'
+version: "3"
 services:
-    graph:
-        image: grafana/grafana:latest
-        depends_on:
-            - db
-        ports:
-            - "3000:3000"
-   
-    # web:
-    #     image: python:graph
-    #     depends_on:
-    #         - db
-    #     ports:
-    #         - "5000:5000"
+  db:
+    image: mariadb:latest
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=changeme
+      - MYSQL_DATABASE=dht11
+      - MYSQL_PASSWOR=mikeishere
+      - MYSQL_USER=mike
 
-    db:
-        image: postgres:10
-        ports: 
-            - "5432:5432"
-        environment:
-            - POSTGRES_DB=dht11
-            - POSTGRES_PASSWORD=mikeishere
-            - POSTGRES_USER=mike
+  graph:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+
+  web:
+    build: .
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - PORT=8000
+      - DATABASE_TYPE=mysql
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3306
+      - DATABASE_NAME=dht11
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=changeme
+      - DATABASE_SYNCRONIZED=true
+      - DATABASE_MIGRATION_TABLE_NAME=mysql-grafana-migtrations
