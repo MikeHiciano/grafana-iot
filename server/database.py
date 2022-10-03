@@ -12,7 +12,7 @@ def create_table():
 def insert_table(device,temperature,humidity):
     with conn:
         with conn.cursor() as cursor:
-            SQL = "INSERT INTO measures (device,temperature,humidity,date) VALUES(%s,%s,%s,(to_timestamp(%s, 'yyyy-mm-dd hh24:mi:ss'))) RETURNING True"
+            SQL = "INSERT INTO measures (device,temperature,humidity,date) VALUES(%s,%s,%s,%s) RETURNING True"
             data = (device,temperature,humidity,datetime.now())
             cursor.execute(SQL, data)
 
